@@ -1,0 +1,188 @@
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Define the input shape of your images
+input_shape = (1000, 400, 1)
+
+model = Sequential()
+
+# First Convolutional Layer
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+model.add(MaxPooling2D((2, 2)))
+
+# Second Convolutional Layer
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+# Third Convolutional Layer
+model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+# Flatten the layers
+model.add(Flatten())
+
+# Fully connected layer
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+
+# Output layer
+model.add(Dense(5, activation='softmax'))  # Remove 'num_classes=' from Dense layer
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Define the height and width
+height = 1000  # example value, set to your desired height
+width = 400   # example value, set to your desired width
+
+# Create an instance of ImageDataGenerator with data augmentation and validation split
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    validation_split=0.2
+)
+
+# Generate training data
+train_generator = train_datagen.flow_from_directory(
+    'data/train',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical',
+    subset='training'
+)
+
+# Generate validation data
+validation_generator = train_datagen.flow_from_directory(
+    'data/train',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical',
+    subset='validation'
+)
+history = model.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=50
+)
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+test_generator = test_datagen.flow_from_directory(
+    'data/test',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical'
+
+
+test_generator = test_datagen.flow_from_directory(
+    'data/test',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical'
+)
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Define the input shape of your images
+input_shape = (1000, 400, 1)
+
+model = Sequential()
+
+# First Convolutional Layer
+model.add(Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
+model.add(MaxPooling2D((2, 2)))
+
+# Second Convolutional Layer
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+# Third Convolutional Layer
+model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(MaxPooling2D((2, 2)))
+
+# Flatten the layers
+model.add(Flatten())
+
+# Fully connected layer
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+
+# Output layer
+model.add(Dense(5, activation='softmax'))  # Remove 'num_classes=' from Dense layer
+
+# Compile the model
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# Define the height and width
+height = 1000  # example value, set to your desired height
+width = 400   # example value, set to your desired width
+
+# Create an instance of ImageDataGenerator with data augmentation and validation split
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    validation_split=0.2
+)
+
+# Generate training data
+train_generator = train_datagen.flow_from_directory(
+    'data/train',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical',
+    subset='training'
+)
+
+# Generate validation data
+validation_generator = train_datagen.flow_from_directory(
+    'data/train',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical',
+    subset='validation'
+)
+history = model.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=50
+)
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+test_generator = test_datagen.flow_from_directory(
+    'data/test',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical'
+)test_datagen = ImageDataGenerator(rescale=1./255)
+
+test_generator = test_datagen.flow_from_directory(
+    'data/test',
+    target_size=(height, width),
+    batch_size=32,
+    color_mode='grayscale',
+    class_mode='categorical'
+)
