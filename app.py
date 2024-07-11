@@ -6,7 +6,8 @@ import tensorflow as tf
 app = Flask(__name__)
 
 # Load your pre-trained model
-model = tf.keras.models.load_model('C:\Users\Kingdom City\Desktop\Folder\my_flask_project\CNN.h5')
+model_path = 'C:/Users/Kingdom City/Desktop/Folder/my_flask_project/CNN.h5'
+model = tf.keras.models.load_model(model_path)
 
 def preprocess_audio(audio_file):
     y, sr = librosa.load(audio_file, sr=None)
@@ -16,28 +17,16 @@ def preprocess_audio(audio_file):
     spectrogram_db_scaled = np.mean(spectrogram_db.T, axis=0)
     return spectrogram_db_scaled
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+@app.route('/check', methods=['POST'])
+def check_file_condition():
+    file_path = request.json.get('file_path')
+    condition = request.json.get('condition')
     
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    try:
-        # Read the audio file from the request
-        audio_data = io.BytesIO(file.read())
-        features = preprocess_audio(audio_data)
-        features = np.expand_dims(features, axis=0)
-        
-        # Make prediction
-        prediction = model.predict(features)
-        response = {'prediction': prediction.tolist()}
-        return jsonify(response)
-    
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    if file_path == "C:/Users/Kingdom City/Desktop/Audio files of brain waves/Spectograms/Beta2.png" and condition == "Anxiety":
+        return jsonify({'message': 'C:/Users/Kingdom City/Desktop/Binarual beats/Happy music/Alpha Binaurual.wav'})
+    else:
+        return jsonify({'message': 'Condition not met'}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
